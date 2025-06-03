@@ -89,7 +89,7 @@ The application uses database transactions with REPEATABLE READ isolation level 
 
 1. Clone the repository
 ```powershell
-git clone https://github.com/yossefezzat/wallet-management-.git
+git clone [https://github.com/yossefezzat/wallet-management.git](https://github.com/yossefezzat/wallet-management.git)
 cd fintech-app
 ```
 
