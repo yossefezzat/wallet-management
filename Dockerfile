@@ -1,45 +1,23 @@
-# Build stage
-FROM node:18-alpine AS development
+# Use the official Node.js image from the Docker Hub
+FROM node:18-alpine
 
-# Set working directory
+# Set the working directory inside the container
 WORKDIR /usr/src/app
 
-# Copy package files
+# Copy package.json and package-lock.json for better caching
 COPY package*.json ./
 
-# Install dependencies
-RUN npm install
+# Install dependencies with legacy peer deps
+RUN npm install --legacy-peer-deps
 
-# Copy application source
+# Copy the rest of your application code
 COPY . .
 
-# Build application
+# Build the application
 RUN npm run build
 
-# Production stage
-FROM node:18-alpine AS production
-
-# Set NODE_ENV
-ARG NODE_ENV=production
-ENV NODE_ENV=${NODE_ENV}
-
-# Set working directory
-WORKDIR /usr/src/app
-
-# Copy package files
-COPY package*.json ./
-
-# Install production dependencies only
-RUN npm ci --only=production
-
-# Copy built application from development stage
-COPY --from=development /usr/src/app/dist ./dist
-
-# Copy database initialization script
-COPY scripts/init-db.js ./scripts/
-
-# Expose application port
+# Expose the application port
 EXPOSE 3000
 
-# Start the application with database initialization
-CMD ["sh", "-c", "node scripts/init-db.js && node dist/main"]
+# Start the application with DB initialization
+CMD ["sh", "-c", "npm run start && node scripts/init-db.js && node dist/main"]

@@ -9,7 +9,7 @@ import {
   Query,
 } from '@nestjs/common';
 import { AppLoggerService } from '../../common/services/logger/logger.service';
-import { ApiTags, ApiOperation, ApiResponse, ApiParam, ApiQuery } from '@nestjs/swagger';
+import { ApiTags, ApiOperation, ApiResponse, ApiParam, ApiQuery, ApiBody } from '@nestjs/swagger';
 import { TransactionsService } from './transactions.service';
 import { DepositDto } from './dto/deposit.dto';
 import { WithdrawDto } from './dto/withdraw.dto';
@@ -44,6 +44,7 @@ export class TransactionsController {
     status: HttpStatus.NOT_FOUND,
     description: ACCOUNT_ERRORS.NOT_FOUND(''),
   })
+  @ApiBody({ type: DepositDto })
   async deposit(
     @Body() depositDto: DepositDto,
   ): Promise<{ data: Transaction; message: string }> {
@@ -67,6 +68,7 @@ export class TransactionsController {
   @Post('withdraw')
   @HttpCode(HttpStatus.CREATED)
   @ApiOperation({ summary: 'Withdraw funds from an account' })
+  @ApiBody({ type: WithdrawDto })
   @ApiResponse({
     status: HttpStatus.CREATED,
     description: TRANSACTION_MESSAGES.WITHDRAWAL_SUCCESSFUL,

@@ -90,6 +90,17 @@ export class AppLoggerService implements LoggerService {
   }
 
   /**
+   * Log a message at the 'info' level (implements LoggerService interface)
+   * @param message The message to log
+   * @param optionalParams Optional parameters including context and metadata
+   */
+  log(message: any, ...optionalParams: any[]): void {
+    const context = typeof optionalParams[0] === 'string' ? optionalParams[0] : undefined;
+    const metadata = optionalParams.length > 1 ? optionalParams[1] : undefined;
+    this.writeLog('info', message, context, metadata);
+  }
+
+  /**
    * Write a log message with the specified level
    * @param level The log level
    * @param message The message to log

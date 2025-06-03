@@ -7,7 +7,7 @@ import {
   HttpCode,
   HttpStatus,
 } from '@nestjs/common';
-import { ApiTags, ApiOperation, ApiResponse, ApiParam } from '@nestjs/swagger';
+import { ApiTags, ApiOperation, ApiResponse, ApiParam, ApiBody } from '@nestjs/swagger';
 import { AccountsService } from './accounts.service';
 import { CreateAccountDto } from './dto/create-account.dto';
 import { Account } from './entities/account.entity';
@@ -25,6 +25,18 @@ export class AccountsController {
     status: HttpStatus.CREATED,
     description: 'Account created successfully',
     type: Account,
+  })
+   @ApiBody({
+    type: CreateAccountDto,
+    description: 'Account creation data',
+    examples: {
+      example1: {
+        value: {
+          name: "John Doe",
+          description: "Personal savings account"
+        }
+      }
+    }
   })
   @ApiResponse({ status: 400, description: 'Bad Request' })
   async create(

@@ -1,49 +1,37 @@
 version: '3.8'
 
 services:
-  api:
-    build:
-      context: .
-      target: production
-    container_name: fintech_api
-    ports:
-      - "3000:3000"
-    env_file:
-      - .env
-    environment:
-      - NODE_ENV=production
-      - DATABASE_HOST=postgres
-      - DATABASE_PORT=5432
-    depends_on:
-      postgres:
-        condition: service_healthy
-    networks:
-      - fintech-network
+    api:
+        build:
+            context: .
+        container_name: fintech_api
+        ports:
+            - "3000:3000"
+        env_file:
+            - .env
+        depends_on:
+            - postgres
+        networks:
+            - fintech-network
 
-  postgres:
-    image: postgres:15-alpine
-    container_name: fintech_postgres
-    ports:
-      - "5432:5432"
-    environment:
-      - POSTGRES_USER=${DATABASE_USER}
-      - POSTGRES_PASSWORD=${DATABASE_PASSWORD}
-      - POSTGRES_DB=${DATABASE_NAME}
-    volumes:
-      - postgres_data:/var/lib/postgresql/data
-    healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U ${DATABASE_USER} -d ${DATABASE_NAME}"]
-      interval: 5s
-      timeout: 5s
-      retries: 5
-    networks:
-      - fintech-network
+    postgres:
+        image: postgres:15-alpine
+        container_name: fintech_postgres
+        environment:
+            POSTGRES_USER: ${DB_USERNAME:-postgres}
+            POSTGRES_PASSWORD: ${DB_PASSWORD:-admin}
+            POSTGRES_DB: ${DB_DATABASE:-fintech_db}
+        volumes:
+            - postgres-data:/var/lib/postgresql/data
+        ports:
+            - "5432:5432"
+        networks:
+            - fintech-network
+            
+networks:
+    fintech-network:
+        name: fintech_network
+        driver: bridge
 
 volumes:
-  postgres_data:
-    name: fintech_postgres_data
-
-networks:
-  fintech-network:
-    name: fintech_network
-    driver: bridge
+  postgres-data:
