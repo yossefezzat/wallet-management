@@ -4,7 +4,6 @@ import { ValidationPipe } from '@nestjs/common';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { HttpExceptionFilter } from './common/filters/http-exception.filter';
 import { ResponseInterceptor } from './common/interceptors/response.interceptor';
-import { CreateAccountDto } from './modules/accounts/dto/create-account.dto';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);

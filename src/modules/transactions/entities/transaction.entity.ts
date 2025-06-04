@@ -1,5 +1,5 @@
 import { BaseEntity } from '../../../common/entities/base.entity';
-import { Entity, Column, ManyToOne, JoinColumn } from 'typeorm';
+import { Entity, Column, ManyToOne, JoinColumn, Index } from 'typeorm';
 import { Account } from '../../accounts/entities/account.entity';
 import { ApiProperty } from '@nestjs/swagger';
 export enum TransactionType {
@@ -37,6 +37,7 @@ export class Transaction extends BaseEntity {
     type: String,
     description: 'ID of the associated account'
   })
+  @Index()
   @Column({ name: 'account_id' })
   accountId: string;
 
