@@ -62,7 +62,6 @@ The application uses database transactions with REPEATABLE READ isolation level 
 
 ### Transactions
 
-- `POST /api/transactions` - Create a new transaction
 - `POST /api/transactions/deposit` - Deposit funds to an account
 - `POST /api/transactions/withdraw` - Withdraw funds from an account
 - `GET /api/transactions/account/:accountId` - Get all transactions for an account
